@@ -135,7 +135,7 @@
             display: flex;
             justify-content: space-between;
             padding: 0 8vw;
-            font-size: clamp(2rem, 6vw, 8rem);
+            font-size: clamp(1.5rem, 4vw, 8rem);
             overflow: hidden;
             pointer-events: none;
             z-index: 15;
@@ -155,6 +155,48 @@
         
         .text__header__right {
             transform: translateX(100vw);
+        }
+
+        /* Custom Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 2px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 50;
+        }
+
+        .progress-fill {
+            width: 100%;
+            height: 0%;
+            background: #000000;
+            transition: height 0.15s ease-out;
+        }
+
+        /* Cursor Follower */
+        .cursor-follower {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            background: #facc15;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 50;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease-out;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Hide default scrollbar */
+        main::-webkit-scrollbar {
+            display: none;
+        }
+
+        main {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         /* Next section */
@@ -213,6 +255,14 @@
                 </div>
             </section>
 
+            <!-- Custom Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <!-- Cursor Follower -->
+            <div class="cursor-follower"></div>
+
             <section class="next">
                 <div class="next-content">
                     <h2>Pure Craftsmanship</h2>
@@ -229,6 +279,37 @@
         const heroTitle = document.querySelector('.hero__title');
         const headerLeft = document.querySelector('.text__header__left');
         const headerRight = document.querySelector('.text__header__right');
+        const progressFill = document.querySelector('.progress-fill');
+        const cursorFollower = document.querySelector('.cursor-follower');
+
+        let mousePosition = { x: 0, y: 0 };
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            mousePosition.x = e.clientX;
+            mousePosition.y = e.clientY;
+            updateCursorPosition();
+        });
+
+        function updateCursorPosition() {
+            cursorFollower.style.left = `${mousePosition.x}px`;
+            cursorFollower.style.top = `${mousePosition.y}px`;
+        }
+
+        function updateProgressBar() {
+            const scrollTop = main.scrollTop;
+            const scrollHeight = main.scrollHeight - main.clientHeight;
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            
+            progressFill.style.height = `${scrollProgress}%`;
+            
+            // Scale cursor based on scroll
+            if (scrollTop > 100) {
+                cursorFollower.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            } else {
+                cursorFollower.style.transform = 'translate(-50%, -50%) scale(1)';
+            }
+        }
 
         function animateHero() {
             const rect = heroSection.getBoundingClientRect();
@@ -270,13 +351,23 @@
 
         main.addEventListener('scroll', () => {
             animateHero();
+            updateProgressBar();
         });
 
         // Initialize
         animateHero();
+        updateProgressBar();
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
