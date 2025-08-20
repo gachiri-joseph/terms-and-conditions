@@ -8,69 +8,92 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <title>Simple Hero Scroll</title>
     <style>
+        :root {
+            --max-width: 1440px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 400;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #000;
-            color: white;
+        html, body {
+            background-color: #000000;
+            overscroll-behavior: none;
+            width: 100%;
+            height: 100%;
         }
 
         /* Background grid */
-        .grid {
+        .line__container {
             position: fixed;
             top: 0;
-            left: 50%;
-            transform: translateX(-50%);
             width: 100%;
-            max-width: 1440px;
-            height: 100vh;
+            left: 50%;
+            transform: translate(-50%);
+            max-width: var(--max-width);
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             pointer-events: none;
             z-index: 1;
         }
 
-        .grid::before,
-        .grid::after {
-            content: '';
+        .separator {
             position: absolute;
-            top: 0;
             width: 1px;
             height: 100%;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.149);
         }
 
-        .grid::before { left: 25%; }
-        .grid::after { right: 25%; }
+        .separator:nth-child(1) { left: 25% }
+        .separator:nth-child(2) { left: 50% }
+        .separator:nth-child(3) { left: 75% }
 
-        .grid .center {
-            position: absolute;
+        main {
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+        }
+
+        .scroll__container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        section {
+            position: relative;
+            width: 100%;
             left: 50%;
             transform: translateX(-50%);
-            width: 1px;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.15);
         }
 
-        /* Simple hero section - longer for more video screen time */
-        .hero {
-            height: 1000vh; /* Increased for even longer scroll duration */
-            position: relative;
+        /* Hero section - creates scroll space and contains everything */
+        #hero {
+            display: flex;
+            justify-content: center;
+            height: 500vh; /* Creates more scroll space - was 400vh */
         }
 
-        .hero-sticky {
+        .hero__sticky {
             position: sticky;
             top: 0;
-            height: 100vh;
+            width: 100%;
+            height: 20%; /* 100vh when height is 500vh */
             overflow: hidden;
         }
 
         /* Initial title */
-        .title {
+        .hero__title {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -79,63 +102,59 @@
             text-align: center;
         }
 
-        .title h1 {
+        .hero__title h1 {
             font-size: clamp(3rem, 8vw, 12rem);
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: -0.02em;
         }
 
-        /* Video */
-        .video {
+        /* Video starts completely hidden and emerges from center */
+        .main__video {
             position: absolute;
+            width: 100%;
+            height: 100%;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            /* Key fix: Set transform-origin to center and start at scale(0) */
+            transform: translate(-50%, -50%) scale(0);
+            transform-origin: center center;
             object-fit: cover;
+            will-change: transform;
             z-index: 5;
-            width: 0;
-            height: 0;
+            opacity: 1;
         }
 
-        /* Overlay text */
-        .overlay {
+        /* Text overlay */
+        .video__text__overlay {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
-            z-index: 15;
-        }
-
-        .overlay-content {
             display: flex;
             justify-content: space-between;
             padding: 0 8vw;
+            font-size: clamp(2rem, 6vw, 8rem);
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 15;
         }
 
-        .overlay h2 {
-            font-size: clamp(3rem, 10vw, 15rem);
+        .video__text__overlay h2 {
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: -0.02em;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-            transition: transform 2.2s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* Overlay text starts positioned completely off-screen */
-        .overlay h2:first-child {
+        /* Hide text overlay initially */
+        .text__header__left {
             transform: translateX(-100vw);
         }
-
-        .overlay h2:last-child {
+        
+        .text__header__right {
             transform: translateX(100vw);
-        }
-
-        /* When overlay is shown, text slides to center */
-        .overlay.show h2:first-child,
-        .overlay.show h2:last-child {
-            transform: translateX(0);
         }
 
         /* Next section */
@@ -166,181 +185,98 @@
     </style>
 </head>
 <body>
-    <div class="grid">
-        <div class="center"></div>
+    <div class="line__container">
+        <div class="separator"></div>
+        <div class="separator"></div>
+        <div class="separator"></div>
     </div>
 
-    <section class="hero">
-        <div class="hero-sticky">
-            <div class="title">
-                <h1>Unlock the Magic</h1>
-            </div>
-            
-            <video class="video" autoplay muted loop playsinline>
-                <source src="https://framerusercontent.com/modules/assets/BcIElVBzSD9P1ht5PhehnVyzTA~0iRDOKjSaNyoXJfsXAcSsdeEYSbJ8aAp3MvS5ts7LL0.mp4" type="video/mp4">
-            </video>
-            
-            <div class="overlay">
-                <div class="overlay-content">
-                    <h2>In Every</h2>
-                    <h2>Stitch</h2>
+    <main>
+        <div class="scroll__container">
+            <section id="hero">
+                <div class="hero__sticky">
+                    <!-- Initial title -->
+                    <div class="hero__title">
+                        <h1>Unlock the Magic</h1>
+                    </div>
+                    
+                    <!-- Video that grows from center -->
+                    <video class="main__video" autoplay muted loop playsinline>
+                        <source src="https://framerusercontent.com/modules/assets/BcIElVBzSD9P1ht5PhehnVyzTA~0iRDOKjSaNyoXJfsXAcSsdeEYSbJ8aAp3MvS5ts7LL0.mp4" type="video/mp4">
+                    </video>
+                    
+                    <!-- Text overlay that slides in -->
+                    <div class="video__text__overlay">
+                        <h2 class="text__header__left">In Every</h2>
+                        <h2 class="text__header__right">Stitch</h2>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section class="next">
-        <div class="next-content">
-            <h2>Pure Craftsmanship</h2>
-            <p>Every detail matters. From concept to creation, we ensure each piece reflects our commitment to excellence and attention to the finest details.</p>
+            <section class="next">
+                <div class="next-content">
+                    <h2>Pure Craftsmanship</h2>
+                    <p>Every detail matters. From concept to creation, we ensure each piece reflects our commitment to excellence and attention to the finest details.</p>
+                </div>
+            </section>
         </div>
-    </section>
+    </main>
 
     <script>
-        // Get DOM elements
-        const titleElement = document.querySelector('.title');
-        const videoElement = document.querySelector('.video');
-        const overlayElement = document.querySelector('.overlay');
-        const heroSectionElement = document.querySelector('.hero');
+        const main = document.querySelector('main');
+        const heroSection = document.querySelector('#hero');
+        const video = document.querySelector('.main__video');
+        const heroTitle = document.querySelector('.hero__title');
+        const headerLeft = document.querySelector('.text__header__left');
+        const headerRight = document.querySelector('.text__header__right');
 
-        /**
-         * Main scroll handler - updates all hero animations based on scroll position
-         * Maps scroll progress to three distinct phases:
-         * Phase 1 (0-20%): Show initial title only
-         * Phase 2 (20-85%): Video grows from center while title fades out
-         * Phase 3 (85-100%): Video at full size, overlay text slides in from sides
-         */
-        function handleHeroScroll() {
-            // Calculate how far user has scrolled through the hero section
-            const currentScrollPosition = window.scrollY;
-            const heroTotalHeight = heroSectionElement.offsetHeight;
-            const viewportHeight = window.innerHeight;
+        function animateHero() {
+            const rect = heroSection.getBoundingClientRect();
+            const heroHeight = heroSection.offsetHeight;
+            const windowHeight = window.innerHeight;
             
-            // Convert scroll position to progress percentage (0 to 1)
-            const scrollProgress = Math.min(currentScrollPosition / (heroTotalHeight - viewportHeight), 1);
+            // Calculate how much we've scrolled through the hero section
+            const scrolled = heroHeight - rect.bottom;
+            const totalScrollDistance = heroHeight - windowHeight;
             
-            // Phase 1: Initial state - show title, hide everything else
-            if (scrollProgress < 0.2) {
-                showInitialTitle();
-                hideVideo();
-                hideOverlayText();
+            // Progress from 0 to 1 as we scroll through the hero
+            let progress = scrolled / totalScrollDistance;
+            progress = Math.max(0, Math.min(1, progress));
+            
+            console.log('Progress:', progress, 'Video scale:', progress); // Debug log
+            
+            // Video scaling - grows from 0 to 1 as user scrolls
+            video.style.transform = `translate(-50%, -50%) scale(${progress})`;
+
+            // Title push out - fades and scales up as video grows
+            let titleOpacity = 1 - (progress * 1.5);
+            titleOpacity = Math.max(0, titleOpacity);
+            let titleScale = 1 + (progress * 0.5);
+            heroTitle.style.opacity = titleOpacity;
+            heroTitle.style.transform = `translate(-50%, -50%) scale(${titleScale})`;
+
+            // Text overlay - slides in when video is almost full size
+            if (progress > 0.6) {
+                let textProgress = (progress - 0.6) / 0.4; // 0 to 1 for last 40%
+                let slideDistance = (1 - textProgress) * windowHeight * 0.5;
+                headerLeft.style.transform = `translateX(${-slideDistance}px)`;
+                headerRight.style.transform = `translateX(${slideDistance}px)`;
+            } else {
+                // Keep text off-screen
+                headerLeft.style.transform = 'translateX(-100vw)';
+                headerRight.style.transform = 'translateX(100vw)';
             }
-            
-            // Phase 2: Video emergence - video grows while title gets pushed out
-            else if (scrollProgress < 0.90) { // Video animation until 92%
-                const phaseProgress = calculatePhaseProgress(scrollProgress, 0.2, 0.90);
-                animateVideoGrowth(phaseProgress);
-                animateTitlePushOut(phaseProgress);
-                hideOverlayText();
-            }
-            
-            // Phase 3: Final state - video full size, overlay text slides in from edges
-            else {
-                const phaseProgress = calculatePhaseProgress(scrollProgress, 0.90, 1.0);
-                showFullSizeVideo();
-                hidePushedTitle();
-                animateOverlayTextEntry(phaseProgress);
-            }
         }
 
-        /**
-         * Calculate progress within a specific phase
-         * @param {number} totalProgress - Overall scroll progress (0-1)
-         * @param {number} phaseStart - When this phase starts (0-1)
-         * @param {number} phaseEnd - When this phase ends (0-1)
-         * @returns {number} Progress within this phase (0-1)
-         */
-        function calculatePhaseProgress(totalProgress, phaseStart, phaseEnd) {
-            return Math.max(0, Math.min(1, (totalProgress - phaseStart) / (phaseEnd - phaseStart)));
-        }
+        main.addEventListener('scroll', () => {
+            animateHero();
+        });
 
-        /**
-         * Phase 1: Display initial title at normal size and opacity
-         */
-        function showInitialTitle() {
-            titleElement.style.opacity = '1';
-            titleElement.style.transform = 'translate(-50%, -50%) scale(1)';
-        }
-
-        /**
-         * Phase 1: Keep video completely hidden
-         */
-        function hideVideo() {
-            videoElement.style.width = '0px';
-            videoElement.style.height = '0px';
-        }
-
-        /**
-         * Phase 1 & 2: Keep overlay text hidden
-         */
-        function hideOverlayText() {
-            overlayElement.classList.remove('show');
-        }
-
-        /**
-         * Phase 2: Animate video growing from center point to full screen
-         * @param {number} progress - How far through the growth phase (0-1)
-         */
-        function animateVideoGrowth(progress) {
-            const targetWidth = window.innerWidth;
-            const targetHeight = window.innerHeight;
-            
-            const currentWidth = progress * targetWidth;
-            const currentHeight = progress * targetHeight;
-            
-            videoElement.style.width = `${currentWidth}px`;
-            videoElement.style.height = `${currentHeight}px`;
-        }
-
-        /**
-         * Phase 2: Animate title being "pushed out" by growing video
-         * Creates effect of video pushing title away by scaling up and fading
-         * @param {number} progress - How far through the push-out phase (0-1)
-         */
-        function animateTitlePushOut(progress) {
-            const fadeOpacity = 1 - progress;           // Fade from 1 to 0
-            const pushScale = 1 + progress * 0.5;       // Scale from 1 to 1.5
-            
-            titleElement.style.opacity = fadeOpacity.toString();
-            titleElement.style.transform = `translate(-50%, -50%) scale(${pushScale})`;
-        }
-
-        /**
-         * Phase 3: Set video to full viewport size
-         */
-        function showFullSizeVideo() {
-            videoElement.style.width = `${window.innerWidth}px`;
-            videoElement.style.height = `${window.innerHeight}px`;
-        }
-
-        /**
-         * Phase 3: Keep title invisible and scaled up
-         */
-        function hidePushedTitle() {
-            titleElement.style.opacity = '0';
-            titleElement.style.transform = 'translate(-50%, -50%) scale(1.5)';
-        }
-
-        /**
-         * Phase 3: Trigger overlay text to slide in from viewport edges toward center
-         * @param {number} progress - How far through the text entry phase (0-1)
-         */
-        function animateOverlayTextEntry(progress) {
-            // Show overlay text immediately when phase 3 begins
-            overlayElement.classList.add('show');
-        }
-
-        // Event listeners
-        window.addEventListener('scroll', handleHeroScroll, { passive: true });
-        window.addEventListener('resize', handleHeroScroll); // Handle window resize
-        
-        // Initialize on page load
-        handleHeroScroll();
+        // Initialize
+        animateHero();
     </script>
 </body>
 </html>
-
-
 
 
 
