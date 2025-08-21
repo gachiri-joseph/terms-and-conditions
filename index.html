@@ -81,6 +81,679 @@
         #hero {
             display: flex;
             justify-content: center;
+            height: 500vh; /* Creates more scroll space */
+        }
+
+        .hero__sticky {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 20%; /* 100vh when height is 500vh */
+            overflow: hidden;
+        }
+
+        /* Initial title */
+        .hero__title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+        }
+
+        .hero__title h1 {
+            font-size: clamp(3rem, 8vw, 12rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        /* Video starts completely hidden and emerges from center */
+        .main__video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 50%;
+            left: 50%;
+            /* Key fix: Set transform-origin to center and start at scale(0) */
+            transform: translate(-50%, -50%) scale(0);
+            transform-origin: center center;
+            object-fit: cover;
+            will-change: transform;
+            z-index: 5;
+            opacity: 1;
+        }
+
+        /* Text overlay */
+        .video__text__overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8vw;
+            font-size: clamp(1.5rem, 4vw, 8rem);
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .video__text__overlay h2 {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Hide text overlay initially */
+        .text__header__left {
+            transform: translateX(-100vw);
+        }
+        
+        .text__header__right {
+            transform: translateX(100vw);
+        }
+
+        /* WHATARE Sticky Thread Section */
+        #whatare-section {
+            display: flex;
+            justify-content: center;
+            height: 800vh; /* Increased scroll space for more content */
+            background: #000;
+        }
+
+        .whatare__sticky {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 12.5%; /* 100vh when height is 800vh */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4rem;
+        }
+
+        /* WHATARE Title - translates from below, smaller size */
+        .whatare-title {
+            font-size: clamp(2.5rem, 8vw, 10rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: translateY(200px);
+            will-change: transform;
+        }
+
+        /* Image Container - right side */
+        .image-container {
+            position: relative;
+            width: 90%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        /* Main Image - starts translated off-screen */
+        .unraveling-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            will-change: transform;
+            z-index: 10;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        /* About Text Container - overlays on image */
+        .about-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(100%);
+            width: 80%;
+            max-width: 600px;
+            padding: 2rem;
+            z-index: 20;
+            opacity: 1;
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        .about-text-content {
+            transform: translateY(0);
+            will-change: transform;
+        }
+
+        .about-text p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: left;
+            font-weight: 400;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .about-text h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: left;
+            color: rgba(218, 165, 32, 0.95);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Collection White Transition Section */
+        #collection-section {
+            display: flex;
+            justify-content: center;
+            height: 400vh; /* Scroll space for the white transition */
+            background: #000;
+        }
+
+        .collection__sticky {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 25%; /* 100vh when height is 400vh */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        /* White overlay that expands from center */
+        .white-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 200%;
+            height: 200%;
+            background: white;
+            border-radius: 50%;
+            z-index: 5;
+            will-change: transform;
+        }
+
+        /* Collection title container */
+        .collection-title-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .collection-title {
+            font-size: clamp(4rem, 15vw, 18rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: #000;
+            mix-blend-mode: difference;
+            transform: translateY(100px);
+            will-change: transform;
+        }
+
+        /* Final section */
+        .final-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            background: white;
+        }
+
+        .final-content {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .final-content h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 2rem;
+            color: #000;
+        }
+
+        .final-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            opacity: 0.8;
+            color: #333;
+        }
+
+        /* Custom Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 2px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 50;
+        }
+
+        .progress-fill {
+            width: 100%;
+            height: 0%;
+            background: #DAA520;
+            transition: height 0.15s ease-out;
+        }
+
+        /* Cursor Follower */
+        .cursor-follower {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            background: #facc15;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 50;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease-out;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Hide default scrollbar */
+        main::-webkit-scrollbar {
+            display: none;
+        }
+
+        main {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="line__container">
+        <div class="separator"></div>
+        <div class="separator"></div>
+        <div class="separator"></div>
+    </div>
+
+    <main>
+        <div class="scroll__container">
+            <!-- Hero Section -->
+            <section id="hero">
+                <div class="hero__sticky">
+                    <!-- Initial title -->
+                    <div class="hero__title">
+                        <h1>Unlock the Magic</h1>
+                    </div>
+                    
+                    <!-- Video that grows from center -->
+                    <video class="main__video" autoplay muted loop playsinline>
+                        <source src="https://framerusercontent.com/modules/assets/BcIElVBzSD9P1ht5PhehnVyzTA~0iRDOKjSaNyoXJfsXAcSsdeEYSbJ8aAp3MvS5ts7LL0.mp4" type="video/mp4">
+                    </video>
+                    
+                    <!-- Text overlay that slides in -->
+                    <div class="video__text__overlay">
+                        <h2 class="text__header__left">In Every</h2>
+                        <h2 class="text__header__right">Stitch</h2>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WHATARE Image Unraveling Section -->
+            <section id="whatare-section">
+                <div class="whatare__sticky">
+                    <!-- WHATARE Title - Vertical, translates in -->
+                    <h1 class="whatare-title">WHATARE</h1>
+                    
+                    <!-- Image Animation Container -->
+                    <div class="image-container">
+                        <!-- Unraveling Image -->
+                        <img class="unraveling-image" 
+                             src="https://cdn.prod.website-files.com/65ca47588ad7db6ed6f38c8b/677d7ad4f0e2518b1fb32095_chani%20bw%20chains.webp" 
+                             alt="Chani chains">
+                        
+                        <!-- Scrollable About Text -->
+                        <div class="about-text">
+                            <div class="about-text-content">
+                                <h3>Our Story Unfolds</h3>
+                                <p>We are craftsmen of the digital age, weaving stories through every pixel and line of code. Our threads connect creativity with technology, passion with precision.</p>
+                                
+                                <h3>The Art of Creation</h3>
+                                <p>From concept to creation, we unravel complex problems and spin them into elegant solutions. Each project is a tapestry of innovation, carefully woven with attention to detail.</p>
+                                
+                                <h3>Golden Threads</h3>
+                                <p>Our golden thread runs through every aspect of design and development, binding together form and function in perfect harmony.</p>
+                                
+                                <h3>Balance & Harmony</h3>
+                                <p>We believe that great work comes from understanding the delicate balance between artistry and engineering, between inspiration and execution.</p>
+                                
+                                <h3>Crafting Excellence</h3>
+                                <p>Every detail matters in our pursuit of perfection. We measure twice, cut once, and deliver solutions that stand the test of time.</p>
+                                
+                                <h3>Innovation Unleashed</h3>
+                                <p>Breaking boundaries and pushing limits, we transform ideas into reality through meticulous craftsmanship and innovative thinking.</p>
+                                
+                                <h3>The Journey Continues</h3>
+                                <p>As we unravel each new challenge, we discover new possibilities, new ways to create, and new stories to tell through our work.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collection Section -->
+            <section id="collection-section">
+                <div class="collection__sticky">
+                    <!-- White overlay that expands from center -->
+                    <div class="white-overlay"></div>
+                    
+                    <!-- Collection title -->
+                    <div class="collection-title-container">
+                        <h1 class="collection-title">COLLECTION</h1>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Final Section -->
+            <section class="final-section">
+                <div class="final-content">
+                    <h2>The Thread Continues</h2>
+                    <p>Every project we undertake adds another strand to our ever-growing tapestry of innovation. Join us as we continue to weave the future, one thread at a time.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Custom Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Cursor Follower -->
+        <div class="cursor-follower"></div>
+    </main>
+
+    <script>
+        const main = document.querySelector('main');
+        const heroSection = document.querySelector('#hero');
+        const video = document.querySelector('.main__video');
+        const heroTitle = document.querySelector('.hero__title');
+        const headerLeft = document.querySelector('.text__header__left');
+        const headerRight = document.querySelector('.text__header__right');
+        const progressFill = document.querySelector('.progress-fill');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        // WHATARE section elements
+        const whatareSection = document.querySelector('#whatare-section');
+        const whatareTitle = document.querySelector('.whatare-title');
+        const unravelingImage = document.querySelector('.unraveling-image');
+        const aboutText = document.querySelector('.about-text');
+        const aboutTextContent = document.querySelector('.about-text-content');
+        
+        // Collection section elements
+        const collectionSection = document.querySelector('#collection-section');
+        const whiteOverlay = document.querySelector('.white-overlay');
+        const collectionTitle = document.querySelector('.collection-title');
+
+        let mousePosition = { x: 0, y: 0 };
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            mousePosition.x = e.clientX;
+            mousePosition.y = e.clientY;
+            updateCursorPosition();
+        });
+
+        function updateCursorPosition() {
+            cursorFollower.style.left = `${mousePosition.x-8}px`;
+            cursorFollower.style.top = `${mousePosition.y-8}px`;
+        }
+
+        function updateProgressBar() {
+            const scrollTop = main.scrollTop;
+            const scrollHeight = main.scrollHeight - main.clientHeight;
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            
+            progressFill.style.height = `${scrollProgress}%`;
+            
+            // Scale cursor based on scroll
+            if (scrollTop > 100) {
+                cursorFollower.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            } else {
+                cursorFollower.style.transform = 'translate(-50%, -50%) scale(1)';
+            }
+        }
+
+        function animateHero() {
+            const rect = heroSection.getBoundingClientRect();
+            const heroHeight = heroSection.offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            // Calculate how much we've scrolled through the hero section
+            const scrolled = heroHeight - rect.bottom;
+            const totalScrollDistance = heroHeight - windowHeight;
+            
+            // Progress from 0 to 1 as we scroll through the hero
+            let progress = scrolled / totalScrollDistance;
+            progress = Math.max(0, Math.min(1, progress));
+            
+            // Video scaling - grows from 0 to 1 as user scrolls
+            video.style.transform = `translate(-50%, -50%) scale(${progress})`;
+
+            // Title push out - fades and scales up as video grows
+            let titleOpacity = 1 - (progress * 1.5);
+            titleOpacity = Math.max(0, titleOpacity);
+            let titleScale = 1 + (progress * 0.5);
+            heroTitle.style.opacity = titleOpacity;
+            heroTitle.style.transform = `translate(-50%, -50%) scale(${titleScale})`;
+
+            // Text overlay - slides in when video is almost full size
+            if (progress > 0.6) {
+                let textProgress = (progress - 0.6) / 0.4; // 0 to 1 for last 40%
+                let slideDistance = (1 - textProgress) * windowHeight * 0.5;
+                headerLeft.style.transform = `translateX(${-slideDistance}px)`;
+                headerRight.style.transform = `translateX(${slideDistance}px)`;
+            } else {
+                // Keep text off-screen
+                headerLeft.style.transform = 'translateX(-100vw)';
+                headerRight.style.transform = 'translateX(100vw)';
+            }
+        }
+
+        function animateWhatareSection() {
+            const rect = whatareSection.getBoundingClientRect();
+            const sectionHeight = whatareSection.offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            // Calculate how much we've scrolled through the whatare section
+            const scrolled = sectionHeight - rect.bottom;
+            const totalScrollDistance = sectionHeight - windowHeight;
+            
+            // Progress from 0 to 1 as we scroll through the section
+            let progress = scrolled / totalScrollDistance;
+            progress = Math.max(0, Math.min(1, progress));
+            
+            // WHATARE title slide up from below - pure translation, no opacity
+            if (progress > 0.05) {
+                const titleProgress = Math.min((progress - 0.05) / 0.2, 1); // 0 to 1 over 20% of scroll
+                const titleTransform = (1 - titleProgress) * 200;
+                whatareTitle.style.transform = `translateY(${titleTransform}px)`;
+            } else {
+                whatareTitle.style.transform = 'translateY(200px)';
+            }
+            
+            // Image and text move together - both start at 15% progress
+            if (progress > 0.15) {
+                const moveProgress = (progress - 0.15) / 0.85; // 0 to 1 for remaining 85% of scroll
+                
+                // Image slides in from right (only happens once at the beginning)
+                if (moveProgress <= 0.3) {
+                    const imageSlideProgress = moveProgress / 0.3; // 0 to 1 over first 30% of movement
+                    const imageTransform = (1 - imageSlideProgress) * 100;
+                    const imageOpacity = imageSlideProgress;
+                    unravelingImage.style.transform = `translateX(${imageTransform}%)`;
+                    unravelingImage.style.opacity = imageOpacity;
+                } else {
+                    unravelingImage.style.transform = 'translateX(0%)';
+                    unravelingImage.style.opacity = '1';
+                }
+                
+                // Text scrolling - starts immediately when image starts moving and continues
+                const textTransform = 100 - (moveProgress * 300); // From 100% to -200%
+                aboutText.style.transform = `translate(-50%, -50%) translateY(${textTransform}%)`;
+            } else {
+                unravelingImage.style.transform = 'translateX(100%)';
+                unravelingImage.style.opacity = '0';
+                aboutText.style.transform = 'translate(-50%, -50%) translateY(100%)';
+            }
+        }
+
+        function animateCollectionSection() {
+            const rect = collectionSection.getBoundingClientRect();
+            const sectionHeight = collectionSection.offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            // Calculate how much we've scrolled through the collection section
+            const scrolled = sectionHeight - rect.bottom;
+            const totalScrollDistance = sectionHeight - windowHeight;
+            
+            // Progress from 0 to 1 as we scroll through the section
+            let progress = scrolled / totalScrollDistance;
+            progress = Math.max(0, Math.min(1, progress));
+            
+            // White overlay expands from center (circle to full screen)
+            if (progress > 0.1) {
+                const overlayProgress = (progress - 0.1) / 0.6; // 0 to 1 over 60% of scroll
+                const overlayScale = Math.min(overlayProgress * 2, 2); // Scale up to 2x to cover screen
+                whiteOverlay.style.transform = `translate(-50%, -50%) scale(${overlayScale})`;
+                
+                // Make overlay more rectangular as it expands
+                // const borderRadius = Math.max(50 - (overlayProgress * 50), 0);
+                // whiteOverlay.style.borderRadius = `${borderRadius}%`;
+            } else {
+                whiteOverlay.style.transform = 'translate(-50%, -50%) scale(0)';
+                whiteOverlay.style.borderRadius = '50%';
+            }
+            
+            // Collection title slides up as white background appears
+            if (progress > 0.3) {
+                const titleProgress = (progress - 0.3) / 0.4; // 0 to 1 over 40% of scroll
+                const titleTransform = (1 - titleProgress) * 100;
+                collectionTitle.style.transform = `translateY(${titleTransform}px)`;
+            } else {
+                collectionTitle.style.transform = 'translateY(100px)';
+            }
+        }
+
+        main.addEventListener('scroll', () => {
+            animateHero();
+            animateWhatareSection();
+            animateCollectionSection();
+            updateProgressBar();
+        });
+
+        // Initialize
+        animateHero();
+        animateWhatareSection();
+        animateCollectionSection();
+        updateProgressBar();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>Simple Hero Scroll</title>
+    <style>
+        :root {
+            --max-width: 1440px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 400;
+        }
+
+        html, body {
+            background-color: #000000;
+            overscroll-behavior: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Background grid */
+        .line__container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            left: 50%;
+            transform: translate(-50%);
+            max-width: var(--max-width);
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .separator {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.149);
+        }
+
+        .separator:nth-child(1) { left: 25% }
+        .separator:nth-child(2) { left: 50% }
+        .separator:nth-child(3) { left: 75% }
+
+        main {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+        }
+
+        .scroll__container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        section {
+            position: relative;
+            width: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Hero section - creates scroll space and contains everything */
+        #hero {
+            display: flex;
+            justify-content: center;
             height: 500vh; /* Creates more scroll space - was 400vh */
         }
 
